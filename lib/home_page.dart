@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -9,6 +10,8 @@ import 'gym_location_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+  static final kInitialPosition = LatLng(-33.8567844, 151.213108);
+
 
   @override
   _HomePageState createState() => _HomePageState();
