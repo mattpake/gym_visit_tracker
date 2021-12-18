@@ -1,3 +1,4 @@
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -104,18 +105,27 @@ class _HomePageState extends State<HomePage> {
         //   Text('Longitude = $longitudePosition'),
         // ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _onItemTapped,
-        currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            label: "Calendar",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.location_on), label: "Location"),
+      bottomNavigationBar: FancyBottomNavigation(
+        tabs: [
+              TabData(iconData: Icons.calendar_today_outlined, title: "Calendar"),
+              TabData(iconData: Icons.location_on, title: "Location")
         ],
+        onTabChangedListener: (_onItemTapped),
       ),
+
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   onTap: _onItemTapped,
+      //   currentIndex: _selectedIndex,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.calendar_today_outlined),
+      //       label: "Calendar",
+      //     ),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.location_on), label: "Location"),
+      //   ],
+      // ),
     );
   }
 }
