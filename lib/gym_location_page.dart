@@ -14,9 +14,9 @@ class GymLocationPage extends StatefulWidget {
 }
 
 class _GymLocationPageState extends State<GymLocationPage> {
-  List<String>? gymAdresses;
+  var pickedAddresses = <String>[];
   PickResult? selectedPlace;
-
+  var indexTmp;
 
   @override
   Widget build(BuildContext context) {
@@ -27,26 +27,35 @@ class _GymLocationPageState extends State<GymLocationPage> {
       body: Column(
         children: [
           Container(
-            height: 100,
+            height: pickedAddresses.isEmpty
+                ? MediaQuery.of(context).size.height * 0.4
+                : MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
-              itemCount: (gymAdresses == null) ? 1 : gymAdresses!.length,
+              itemCount: pickedAddresses.length,
               itemBuilder: (context, index) {
+                indexTmp = index;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            gymAdresses == null
-                                ? "You don't have any Gym Location"
-                                : gymAdresses![index],
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
+                    child: ListTile(
+                      trailing: Column(
+                        children: <Widget>[
+                          Container(
+                            child: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                pickedAddresses.removeAt(index);
+                                setState(() {});
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      title: Text(
+                        pickedAddresses[index].toString(),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 );
@@ -75,7 +84,26 @@ class _GymLocationPageState extends State<GymLocationPage> {
                         usePinPointingSearch: true,
                         usePlaceDetailSearch: true,
                         onPlacePicked: (result) {
-                          selectedPlace = result;
+                          if (pickedAddresses.isEmpty ||
+                              !pickedAddresses
+                                  .contains(result.formattedAddress)) {
+                            if (pickedAddresses.length <= 4) {
+                              pickedAddresses
+                                  .add(result.formattedAddress.toString());
+                            } else {
+                              const snackBar = SnackBar(
+                                content: Text(
+                                  'The maximum of Gym locations is five.',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.amber,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                          }
                           Navigator.of(context).pop();
                           setState(() {});
                         },
@@ -187,21 +215,9 @@ class _GymLocationPageState extends State<GymLocationPage> {
                 );
               },
             ),
-
           ),
-          selectedPlace == null ? Container() : Text(selectedPlace?.formattedAddress ?? ""),
-
         ],
       ),
     );
   }
-//
-// void showPlacePicker() async {
-//   LocationResult result = await Navigator.of(context).push(
-//       MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyAaGmvhnCBPs-7HD7iyh5gSuX_BAQkWQos")));
-//
-//   // Handle the result in your way
-//   print(result);
-// }
-
 }
