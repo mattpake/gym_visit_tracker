@@ -41,6 +41,7 @@ dependencies:
   google_maps_webservice: ^0.0.19
   google_maps_place_picker_mb: ^2.0.0-mb.11
   fancy_bottom_navigation: ^0.3.3
+  shared_preferences: ^2.0.11
 
 dev_dependencies:
   flutter_test:

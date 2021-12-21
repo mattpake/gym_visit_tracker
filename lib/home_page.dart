@@ -1,10 +1,6 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:geocoding/geocoding.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'calendar_page.dart';
 import 'gym_location_page.dart';
@@ -22,7 +18,6 @@ class _HomePageState extends State<HomePage> {
   String longitudePosition = '';
   String latitudePosition = '';
   var currentAddress = 'My Address';
-  PageController _pageController = PageController();
   List<Widget> _screens = [CalendarPage(), GymLocationPage()];
   int _selectedIndex = 0;
 

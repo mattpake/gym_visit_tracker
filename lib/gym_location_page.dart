@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
+import 'package:gym_visit_tracker/preferences_service.dart';
 
 import 'home_page.dart';
 import 'keys.dart';
@@ -14,9 +14,22 @@ class GymLocationPage extends StatefulWidget {
 }
 
 class _GymLocationPageState extends State<GymLocationPage> {
+  final _preferencesService = PreferencesService();
   var pickedAddresses = <String>[];
   PickResult? selectedPlace;
-  var indexTmp;
+
+  void _populateFields() async {
+    final pickedAddressesSaved = await _preferencesService.getPickedAddresses();
+    setState(() {
+      pickedAddresses = pickedAddressesSaved!;
+    });
+  }
+
+  @override
+  void initState() {
+    _populateFields();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,6 @@ class _GymLocationPageState extends State<GymLocationPage> {
             child: ListView.builder(
               itemCount: pickedAddresses.length,
               itemBuilder: (context, index) {
-                indexTmp = index;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -45,6 +57,7 @@ class _GymLocationPageState extends State<GymLocationPage> {
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 pickedAddresses.removeAt(index);
+                                _savedPickedAddresses();
                                 setState(() {});
                               },
                             ),
@@ -90,6 +103,7 @@ class _GymLocationPageState extends State<GymLocationPage> {
                             if (pickedAddresses.length <= 4) {
                               pickedAddresses
                                   .add(result.formattedAddress.toString());
+                              _savedPickedAddresses();
                             } else {
                               const snackBar = SnackBar(
                                 content: Text(
@@ -219,5 +233,9 @@ class _GymLocationPageState extends State<GymLocationPage> {
         ],
       ),
     );
+  }
+
+  void _savedPickedAddresses() {
+    _preferencesService.savePickedAddresses(pickedAddresses);
   }
 }
