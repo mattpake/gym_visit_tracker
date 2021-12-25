@@ -1,11 +1,15 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      home: HomePage(),
+    CalendarControllerProvider(
+      controller: EventController(),
+      child: const MaterialApp(
+        home: HomePage(),
+      ),
     ),
   );
 }
