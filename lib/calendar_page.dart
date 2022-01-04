@@ -28,11 +28,26 @@ class _CalendarPageState extends State<CalendarPage> {
         .contains(event)) {
       CalendarControllerProvider.of(context).controller.add(event);
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendar Page'),
-      ),
-      body: WeekView(),
-    );
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Calendar Page'),
+            bottom: TabBar(
+              tabs: [
+                Text('Week view'),
+                Text('Month view'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              WeekView(),
+              MonthView(),
+            ],
+          ),
+        ),
+      );
+
   }
 }
